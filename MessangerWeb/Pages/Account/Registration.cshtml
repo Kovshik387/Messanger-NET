@@ -1,0 +1,31 @@
+﻿@page
+@model MessangerWeb.Pages.Account.RegistrationModel
+@{
+
+}
+
+<form method="post">
+	<div class="row justify-content-center mt-3">
+		<div class="col col-sm-8 col-lg-4">
+			<img src="Pictures/logo.jpg" class="card-img-top h-50" alt="logo" />
+			<h1 class="text-center fw-bolder"></h1>
+@*			<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+			<div class="form-floating mt-3">
+				<input type="text" asp-for="Authentification.Login" class="form-control" id="floatingInput" placeholder="Логин">
+				<label for="floatingInput">Логин</label>
+				<span asp-validation-for="Authentification.Login" class="text-danger"></span>
+			</div>
+			<div class="form-floating mt-3">
+				<input type="password" asp-for="Authentification.Password" class="form-control" id="floatingInput" placeholder="Пароль">
+				<label for="floatingInput">Пароль</label>
+				<span asp-validation-for="Authentification.Password" class="text-danger"></span>
+			</div>*@
+			<div class="d-grid gap-2 mt-3">
+				<button type="submit" class="btn btn-primary btn-lg bg-gradient">Вход</button>
+			</div>
+			<div class="text-center mt-3">
+				<p>У нас нет аккаунта? <a asp-page="/Account/Registration" class="fw-bold">Регистрация</a></p>
+			</div>
+		</div>
+	</div>
+</form>
