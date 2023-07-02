@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-	public interface IRoleRepository : IRepository<Role>
+    public interface IRoleRepository : IRepository<Role>
 	{
 		public Task<Role?> GetRoleAsync(string type);
 	}

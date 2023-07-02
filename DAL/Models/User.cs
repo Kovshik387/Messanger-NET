@@ -1,4 +1,7 @@
-﻿namespace DAL.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace DAL.Models;
 
 public partial class User
 {
@@ -6,7 +9,7 @@ public partial class User
 
     public string Name { get; set; } = null!;
 
-    public string Surname { get; set; } = null!; 
+    public string Surname { get; set; } = null!;
 
     public string? Patronymic { get; set; }
 
@@ -22,9 +25,7 @@ public partial class User
 
     public int IdAuthorize { get; set; }
 
-    public virtual ICollection<Chat> ChatIdUseroneNavigations { get; set; } = new List<Chat>();
-
-    public virtual ICollection<Chat> ChatIdUsertwoNavigations { get; set; } = new List<Chat>();
+    public virtual ICollection<Chat> Chats { get; set; } = new List<Chat>();
 
     public virtual Authorize IdAuthorizeNavigation { get; set; } = null!;
 

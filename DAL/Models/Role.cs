@@ -9,5 +9,5 @@ public partial class Role
 
     public string Type { get; set; } = null!;
 
-    public virtual Authorize? Authorize { get; set; }
+    public virtual ICollection<Authorize> Authorizes { get; set; } = new List<Authorize>();
 }

@@ -17,19 +17,19 @@ namespace MessangerWeb.Pages.Account
     {
 
         private readonly IAuthentificationService _authentication;
-        private readonly IRegistrationService _registration;
+
         private readonly IMapper _mapper;
         private readonly ILogger<LoginModel> _logger;
-        [BindProperty] public AuthentificationModel Authentification { get; set; } = new AuthentificationModel();
+        [BindProperty] public AuthentificationView Authentification { get; set; } = new AuthentificationView();
         public LoginModel(IAuthentificationService authentication, IMapper mapper, ILogger<LoginModel> logger, IRegistrationService registrationService) =>
-            (_authentication, _mapper, _logger,_registration) = (authentication, mapper, logger,registrationService);
+            (_authentication, _mapper, _logger) = (authentication, mapper, logger);
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid || Authentification == null) return Page();
 
             var userDTO = await _authentication.GetUserAsync(Authentification!.Login!,Authentification!.Password!);
-            var user = _mapper.Map<UserModel>(userDTO);
+            var user = _mapper.Map<UserView>(userDTO);
 
             if (user == null) return Page();
 
@@ -38,36 +38,15 @@ namespace MessangerWeb.Pages.Account
 			_logger.LogCritical($"{userDTO!.IdUser} role: {userDTO.Role} {userDTO.GetType()}");
 			_logger.LogCritical($"{user.IdUser} role: {user.Role} {user.GetType()}");
 
-            //
-
-
-            var registrationTest = new RegisterModel()
-            {
-                Email = "test",
-                Login = "lox",
-                Password = "test",
-                Name = "test",
-                Profileimage = "test",
-                Patronymic = "test",
-                Surname = "test",
-                Type = "Работник",
-            };
-            var registerDTO = _mapper.Map<RegisterDTO>(registrationTest);
-
-            await _registration.AddUserAsync(registerDTO);
-
-            //
-
-			return RedirectToPage("Privacy");
+			return RedirectToPage("a");
         }
 
-        private async System.Threading.Tasks.Task Authentificate(UserModel user)
+        private async System.Threading.Tasks.Task Authentificate(UserView user)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.IdUser.ToString()),
 				new Claim(ClaimTypes.Role, user.Role),
-				//new Claim("Role", ),
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             _logger.LogInformation("Авторизация выполнена");

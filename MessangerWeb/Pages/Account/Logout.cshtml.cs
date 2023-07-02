@@ -10,7 +10,7 @@ namespace MessangerWeb.Pages.Account
         public async Task<IActionResult> OnGet()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToPage("/Account/Login");
+            return RedirectToPage("/Index");
         }
     }
 }

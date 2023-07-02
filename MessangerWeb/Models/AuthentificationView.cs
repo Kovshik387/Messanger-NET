@@ -1,6 +1,6 @@
 ﻿namespace MessangerWeb.Models
 {
-	public class AuthentificationModel
+	public class AuthentificationView
 	{
 		public string? Login { get; set; }
 

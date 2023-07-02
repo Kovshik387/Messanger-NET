@@ -1,6 +1,5 @@
 ﻿using DAL.Interfaces;
 using DAL.Models;
-using DAL.TemporalContext;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,9 +19,9 @@ namespace DAL.Repositories
 			throw new NotImplementedException();
 		}
 
-		public Task<IEnumerable<Role>> GetAllAsync()
+		public async Task<IEnumerable<Role>> GetAllAsync()
 		{
-			throw new NotImplementedException();
+			return await _dbContext.Roles.ToListAsync();
 		}
 
 		public Task<Role?> GetItemAsync(int id)

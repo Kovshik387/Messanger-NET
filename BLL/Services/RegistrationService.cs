@@ -30,5 +30,11 @@ namespace BLL.Services
 			await _dbContext.SaveChangesAsync();
 			return modelDTO;
 		}
+
+		public async Task<List<RoleDTO?>> GetAllRoleAsync()
+		{
+			return Mapping.Mapper.Map<List<RoleDTO?>>(await _dbContext.RoleRepository.GetAllAsync());
+		}
+
 	}
 }

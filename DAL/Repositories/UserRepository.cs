@@ -1,7 +1,6 @@
 ﻿using DAL.Common;
 using DAL.Interfaces;
 using DAL.Models;
-using DAL.TemporalContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
@@ -15,30 +14,6 @@ namespace DAL.Repositories
         public Task<User?> AddChats(User user)
         {
             throw new NotImplementedException();
-        }
-
-        public async System.Threading.Tasks.Task CreateUserAsync(string login, string password,int profile_type, User user)
-        {
-            if (await _dbContext.Authorizes.FirstOrDefaultAsync(item => item.Login == login) != null)
-                throw new RepositoryException("Login already in use");
-
-            user.IdAuthorizeNavigation = new Authorize()
-            {
-                Login = login,
-                Password = password,
-                IdRole = profile_type
-            };
-
-            await _dbContext.Users.AddAsync(user);
-        }
-        public async System.Threading.Tasks.Task CreateUserAsync(User user, Authorize authorize)
-        {
-            if (user == null || authorize == null) throw new RepositoryException("Null");
-
-            user.Datestartwork = DateOnly.FromDateTime(DateTime.UtcNow);
-            user.Active = true; user.IdAuthorizeNavigation = authorize;
-
-            await _dbContext.Users.AddAsync(user);
         }
 
         public Task<IEnumerable<User>> FindAsync(int id_item)
@@ -77,7 +52,7 @@ namespace DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(User user)
         {
-			user.Datestartwork = DateOnly.FromDateTime(DateTime.UtcNow);
+			user.Datestartwork = DateOnly.FromDateTime(DateTime.Now);
 			user.Active = true;
 
             var profile = user.IdAuthorizeNavigation;

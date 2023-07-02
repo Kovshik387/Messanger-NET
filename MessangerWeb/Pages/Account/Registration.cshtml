@@ -1,31 +1,118 @@
 ﻿@page
 @model MessangerWeb.Pages.Account.RegistrationModel
 @{
-
 }
 
-<form method="post">
-	<div class="row justify-content-center mt-3">
-		<div class="col col-sm-8 col-lg-4">
-			<img src="Pictures/logo.jpg" class="card-img-top h-50" alt="logo" />
-			<h1 class="text-center fw-bolder"></h1>
-@*			<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
-			<div class="form-floating mt-3">
-				<input type="text" asp-for="Authentification.Login" class="form-control" id="floatingInput" placeholder="Логин">
-				<label for="floatingInput">Логин</label>
-				<span asp-validation-for="Authentification.Login" class="text-danger"></span>
+<form method="post" enctype="multipart/form-data">
+
+	<h1 class="text-center fw-bolder border-primary">Регистрация</h1>
+	
+	<div class="col-1 shadow border border-secondary w-100 h-200" style="border-radius:10px;">
+		<div class="row justify-content-center mt-3 p-2">
+
+			<div class="row row-cols-3">
+
+				<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+
+				<div class="col-md-4 p-3">
+					<input type="email" asp-for="RegisterModel.Email" class="form-control" placeholder="Email">
+					<span asp-validation-for="RegisterModel.Email" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-4 p-3">
+					<input type="text" asp-for="RegisterModel.Login" class="form-control" placeholder="Логин">
+					<span asp-validation-for="RegisterModel.Login" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-4 p-3">
+					<div class="input-group">
+						<input type="password" asp-for="RegisterModel.Password" id="password" class="form-control" placeholder="Пароль">
+						<button class="btn btn-outline-secondary" type="button" id="button-addon">
+							<i id="password-icon" class="bi bi-eye-slash-fill"></i>
+						</button>
+					</div>
+					<span asp-validation-for="RegisterModel.Password" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-4 p-3">
+					<input type="text" asp-for="RegisterModel.Name" class="form-control" placeholder="Имя">
+					<span asp-validation-for="RegisterModel.Name" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-4 p-3">
+					<input type="text" asp-for="RegisterModel.Surname" class="form-control" placeholder="Фамилия">
+					<span asp-validation-for="RegisterModel.Surname" class="text-danger"></span>
+				</div>
+
+				<div class="col-md-4 p-3">
+					<input type="text" asp-for="RegisterModel.Patronymic" class="form-control" placeholder="Отчество">
+					<span asp-validation-for="RegisterModel.Patronymic" class="text-danger"></span>
+				</div>
+
 			</div>
-			<div class="form-floating mt-3">
-				<input type="password" asp-for="Authentification.Password" class="form-control" id="floatingInput" placeholder="Пароль">
-				<label for="floatingInput">Пароль</label>
-				<span asp-validation-for="Authentification.Password" class="text-danger"></span>
-			</div>*@
+
+			<div class="row row-cols-3 p-3">
+				<div class="col">
+					<select asp-for="RegisterModel.Type" class="form-control">
+						@foreach (var item in @Model.RoleSelecter)
+						{
+							<option value="@item.Type">@item.Type</option>
+						}
+					</select>
+
+					<div class="p-3"></div>
+
+					<div class="col">
+						<input type="file" asp-for="Upload" class="form-control" accept="image/*" onchange="loadFile(event,'outputBack')"/>
+					</div>
+
+				</div>
+
+				<div class="col">
+					<div class="row-cols-2">
+						<img class="mb-3 card-img-top" style="height: 105px; width: auto;" id="outputBack" src="~/Pictures/default_profile.jpg">
+					</div>
+				</div>
+			</div>
+
+
+
 			<div class="d-grid gap-2 mt-3">
-				<button type="submit" class="btn btn-primary btn-lg bg-gradient">Вход</button>
+				<button type="submit" class="btn btn-primary btn-lg bg-gradient">Регистрация</button>
 			</div>
+
 			<div class="text-center mt-3">
-				<p>У нас нет аккаунта? <a asp-page="/Account/Registration" class="fw-bold">Регистрация</a></p>
+				<p>У вас уже есть аккаунт? <a asp-page="/Index" class="fw-bold">Войти</a></p>
 			</div>
 		</div>
 	</div>
 </form>
+
+@section Scripts {
+	<script id="password-hideshow" type="text/javascript">
+		$(this.document).ready(function() {
+			var changeClass = (added, deleted) => {
+				$('#password-icon').addClass(added); $('#password-icon').removeClass(deleted);
+			};
+			var isPasswordHide = false;
+			$('#button-addon').click(function(){
+				if(isPasswordHide == false) {
+					$('#password').attr('type', 'text'); changeClass('bi-eye-fill', 'bi-eye-slash-fill');
+				}
+				else { $('#password').attr('type', 'password'); changeClass('bi-eye-slash-fill', 'bi-eye-fill'); }
+				isPasswordHide = !isPasswordHide;
+			});
+		});
+		$(window).on('load', () => $('#myModal').modal('show'));
+
+		const loadFile = function (event, output) {
+			var output = document.getElementById(output);
+			output.src = URL.createObjectURL(event.target.files[0]);
+
+			output.onload = () => {
+				URL.revokeObjectURL(output.src);
+			}
+		};
+	</script>
+
+}

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-	public interface IAuthorizeRepository : IRepository<Authorize>
+    public interface IAuthorizeRepository : IRepository<Authorize>
 	{
 
 	}

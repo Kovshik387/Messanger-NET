@@ -1,6 +1,6 @@
 ﻿namespace MessangerWeb.Models
 {
-	public class RegisterModel
+	public class RegisterView
 	{
 		public int IdUser { get; set; }
 
@@ -12,7 +12,7 @@
 
 		public string? Email { get; set; }
 
-		public string? Profileimage { get; set; }
+		public string Profileimage { get; set; } = "default_profile.jpg";
 
 		public int IdAuthorize { get; set; }
 

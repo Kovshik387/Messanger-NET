@@ -4,7 +4,7 @@ using MessangerWeb.Pages.Account;
 
 namespace MessangerWeb.Infrastructure.Validators
 {
-	public class AuthentificationModelValidator : AbstractValidator<AuthentificationModel>
+	public class AuthentificationModelValidator : AbstractValidator<AuthentificationView>
 	{
 		public AuthentificationModelValidator() 
 		{

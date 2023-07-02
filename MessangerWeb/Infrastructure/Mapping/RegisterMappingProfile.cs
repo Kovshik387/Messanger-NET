@@ -8,7 +8,7 @@ namespace MessangerWeb.Infrastructure.Mapping
 	{
 		public RegisterMappingProfile()
 		{
-			CreateMap<RegisterModel, RegisterDTO>().ReverseMap();
+			CreateMap<RegisterView, RegisterDTO>().ReverseMap();
 		}
 	}
 }

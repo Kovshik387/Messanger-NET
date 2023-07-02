@@ -10,6 +10,7 @@ namespace BLL.Infrastructure.Mapping
 		{
 			CreateMap<Authorize, RegisterDTO>().ReverseMap();
 			CreateMap<User,RegisterDTO>().ReverseMap();
+			CreateMap<Role, RoleDTO>().ReverseMap();
 		}
 	}
 }

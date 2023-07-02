@@ -1,8 +1,5 @@
 ﻿
 using DAL.Interfaces;
-using DAL.TemporalContext;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace DAL.Repositories
 {

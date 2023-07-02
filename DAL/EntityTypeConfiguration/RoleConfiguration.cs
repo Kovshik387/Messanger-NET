@@ -8,14 +8,14 @@ namespace DAL.EntityTypeConfiguration
     {
         public void Configure(EntityTypeBuilder<Role> entity)
         {
-            entity.HasKey(e => e.IdRole).HasName("roles_pkey");
+			entity.HasKey(e => e.IdRole).HasName("roles_pkey");
 
-            entity.ToTable("roles");
+			entity.ToTable("roles");
 
-            entity.Property(e => e.IdRole).HasColumnName("id_role");
-            entity.Property(e => e.Type)
-                .HasMaxLength(30)
-                .HasColumnName("type");
-        }
+			entity.Property(e => e.IdRole).HasColumnName("id_role");
+			entity.Property(e => e.Type)
+				.HasMaxLength(30)
+				.HasColumnName("type");
+		}
     }
 }

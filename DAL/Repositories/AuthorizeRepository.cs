@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-	public class AuthorizeRepository : IAuthorizeRepository
+    public class AuthorizeRepository : IAuthorizeRepository
 	{
 		public System.Threading.Tasks.Task CreateAsync(Authorize item)
 		{
@@ -31,6 +31,21 @@ namespace DAL.Repositories
 		}
 
 		public System.Threading.Tasks.Task UpdateAsync(Authorize item)
+		{
+			throw new NotImplementedException();
+		}
+
+		System.Threading.Tasks.Task IRepository<Authorize>.CreateAsync(Authorize item)
+		{
+			throw new NotImplementedException();
+		}
+
+		System.Threading.Tasks.Task IRepository<Authorize>.SaveChangesAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		System.Threading.Tasks.Task IRepository<Authorize>.UpdateAsync(Authorize item)
 		{
 			throw new NotImplementedException();
 		}

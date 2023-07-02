@@ -1,6 +1,5 @@
 ﻿using DAL.Interfaces;
 using DAL.Models;
-using DAL.TemporalContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
@@ -27,7 +26,7 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<Chat>> GetUserChats(int id_user)
         {
-            return await _dbContext.Chats.Where(id => id.IdUsertwo == id_user || id.IdUsertwo == id_user).ToListAsync(); 
+            return null;//return await _dbContext.Chats.Where(id => id.IdUsertwo == id_user || id.IdUsertwo == id_user).ToListAsync(); 
         }
 
         public async System.Threading.Tasks.Task SaveChangesAsync()

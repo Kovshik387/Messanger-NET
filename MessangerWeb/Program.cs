@@ -1,13 +1,12 @@
 using BLL.Interfaces;
 using BLL.Services;
+using DAL;
 using DAL.Interfaces;
 using DAL.Repositories;
-using DAL.TemporalContext;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MessangerWeb.Infrastructure.Validators;
 using MessangerWeb.Models;
-using MessangerWeb.Pages;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -33,8 +32,8 @@ builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddScoped<IValidator<AuthentificationModel>, AuthentificationModelValidator>();
-
+builder.Services.AddScoped<IValidator<AuthentificationView>, AuthentificationModelValidator>();
+builder.Services.AddScoped<IValidator<RegisterView>, RegistrationViewModelValidation>();
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("User", item => item.RequireClaim(ClaimTypes.Role, "User"));

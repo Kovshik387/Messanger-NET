@@ -10,5 +10,7 @@ namespace BLL.Interfaces
 	public interface IRegistrationService
 	{
 		public Task<RegisterDTO?> AddUserAsync(RegisterDTO registerDTO);
+
+		public Task<List<RoleDTO?>> GetAllRoleAsync();
 	}
 }
