@@ -1,0 +1,75 @@
+version: '3.9'
+
+name: 'messanger'
+
+services:
+  messangerclient: 
+    container_name: 'messangerclient'
+    
+    image: 'kovshik/messangerclient:dev'
+
+    build:
+      context: .
+      dockerfile: MessangerWeb/Dockerfile
+    
+    ports:
+      - "8080:80"
+
+    networks:
+      - messanger-dev
+
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:latest
+
+    container_name: postgres
+    
+    environment:
+
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '123'
+      POSTGRES_DB: 'Messager' 
+    
+    ports:
+      - "5432:5432"
+    
+    networks:
+      - messanger-dev
+    
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: 'pgadminaccess'
+    image: dpage/pgadmin4:latest
+
+    restart: always
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '5050:80'
+    networks:
+      - messanger-dev
+
+    volumes:
+      - './pgadmin:/var/lib/pgadmin'
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512G
+
+volumes:
+  postgres-data: 
+    
+networks:
+  messanger-dev:
+    driver: bridge
+
+    
