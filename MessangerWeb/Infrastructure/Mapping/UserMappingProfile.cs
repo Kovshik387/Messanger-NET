@@ -9,6 +9,7 @@ namespace MessangerWeb.Infrastructure.Mapping
 		public UserMappingProfile()
 		{
 			CreateMap<UserView, AuthentificationDTO>().ReverseMap();
+			CreateMap<UserView, UserDTO>().ReverseMap();
 		}
 	}
 }

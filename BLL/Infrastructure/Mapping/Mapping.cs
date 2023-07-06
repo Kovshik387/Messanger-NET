@@ -15,6 +15,7 @@ namespace BLL.Infrastructure.Mapping
                 cfg.ShouldMapProperty = p => p.GetMethod!.IsPublic || p.GetMethod.IsAssembly;
                 cfg.AddProfile<UserMappingProfile>();
                 cfg.AddProfile<RegisterMappingProfile>();
+                cfg.AddProfile<ChatMappingProfile>();
             });
             var mapper = config.CreateMapper();
             return mapper;

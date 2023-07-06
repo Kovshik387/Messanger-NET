@@ -1,6 +1,8 @@
-﻿@page
+﻿@page 
 @model MessangerWeb.Pages.aModel
 @{
+    //var other_user = @Model.Messages != null ? @Model!.Messages!.FirstOrDefault(u => u.IdUser != int.Parse(HttpContext.User!.Identity!.Name!))!.IdUserNavigation : new();
+    //var user = @Model.Messages != null ? @Model!.Messages!.FirstOrDefault(u => u.IdUser == int.Parse(HttpContext.User!.Identity!.Name!))!.IdUserNavigation : new();
 }
 
 <div class="row">
@@ -10,83 +12,246 @@
 			<div class="card-footer h-60 column">
 				<div class="row g-0">
 					<div class="col-md-4">
-						<img src="~/Pictures/07fd5edf-4499-4149-86b5-8460ac914276.png" alt="" class="rounded-circle" width="100" height="100">
+						<img src="@Model.CurrentUser.Profileimage" alt="" class="rounded-circle" width="100" height="100">
 					</div>
 
 					<div class="col-md-8 g-2 gx-lg-5">
-						<h5>Никита Фантокин</h5>
-						Работник
+						<h5>@Model.CurrentUser.Name @Model.CurrentUser.Surname</h5>
+						@Model.CurrentUser.Role
 					</div>
 
 				</div>
 			</div>
 
-			<div class="px-4 d-none d-md-block">
-				<div class="d-flex align-items-center">
-					<div class="flex-grow-1">
-						<input type="text" class="form-control my-3" placeholder="Поиск...">
-					</div>
+			<form method="get">
+				<div class="d-none d-md-block">
+					@*<div class="d-flex align-items-center">*@
+						<div class="flex-grow-1">
+							@*<input type="text" class="form-control my-3" placeholder="Поиск...">*@
+                            <a asp-page="FindUser" class="list-group-item list-group-item-action">Найти пользователя</a>
+                        </div>
+					@*</div>*@
 				</div>
-			</div>
+			</form>
 
-			<a href="#" class="list-group-item list-group-item-action border-1">
-				<div class="d-flex align-items-start">
-					<img src="~/Pictures/07fd5edf-4499-4149-86b5-8460ac914276.png" class="rounded-circle mr-1" alt="" width="50" height="50">
-					<div class="flex-grow-1 ml-4">
-						Vanessa Tucker
+			@foreach(var item in Model.Chat)
+			{
+				<a asp-route-id_chat="@item.IdChat" asp-page-handler="Chat" class="list-group-item list-group-item-action border-1">
+					<div class="d-flex align-items-start">
+						<img src="@item.IdUserNavigation.Profileimage" class="rounded-circle mr-1" alt="" width="50" height="50">
+						<div class="flex-grow-1 ml-4">
+                            <strong>@item.IdUserNavigation.Name @item.IdUserNavigation.Surname</strong>:
+                            @item.IdChatNavigation.Messages.Last().Body
+						</div>
+						<div class="justify-content-start d-flex py-4">
+						</div>
+						@if(!item.IdChatNavigation.Messages[0].Isread)
+						{
+							<div class="badge bg-success float-right">#</div>
+						}
 					</div>
-					<div class="badge bg-success float-right">#</div>
-				</div>
-			</a>
+				</a>
+			}
+        </div>
+    </div>
+    @if (Model.AnotherUser.Patronymic != null)
+    {
+        <div class="card col">
+            <div class="row">
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>@Model.AnotherUser.Name @Model.AnotherUser.Surname @Model.AnotherUser.Patronymic</h5>
+                            <div class="py-2">@Model.AnotherUser.Role</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <img src="@Model.AnotherUser!.Profileimage" class="rounded-circle" alt="Sharon Lessman" width="100" height="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-		</div>
-	</div>
-	<div class="card col">
-		<div class="row">
-			<div class="card-footer py-2 px-4 border-bottom d-none d-lg-block">
-					<div class="d-flex align-items-center py-1">
-						<div class="position-relative">
-							<img src="~/Pictures/032a1703-45ba-43b7-ba2c-7638ecbfa4e8.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-						</div>
-						<strong>Sharon Lessman</strong>
-					</div>
-			</div>
+                <span hidden="hidden">
+                    <input type="text" id="userInput" value="@this.HttpContext.User!.Identity!.Name" />
+                </span>
 
-			<div class="position-relative">
-				<div class="chat-messages p-4" style="height: 550px;">
-					<div class="chat-message-left pb-4">
-						<div>
-							<img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-							<div class="text-muted small text-nowrap mt-2">2:39 am</div>
-						</div>
-						<div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-							<div class="font-weight-bold mb-1">Sharon Lessman</div>
-							Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-						</div>
-					</div>
+                <div class="position-relative">
+                    <div class="chat-messages p-4" id="messagesList" style="height: 500px;" >
+                        @for(int i = 1;i < @Model.Messages.Count;i++)
+                        {
+                            var item = Model.Messages[i];
+                            if (item.Body == "") continue;
+                            @if (item.IdUser != int.Parse(this.HttpContext.User!.Identity!.Name!))
+                            {
+                                <div class="chat-message-left mb-4">
+                                        <div>
+                                            <img src="@item.IdUserNavigation.Profileimage" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                                            <div class="text-muted small text-nowrap mt-2">@item.Datesend.ToString("t")</div>
+                                        </div>
+                                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                        <div class="font-weight-bold mb-1">@Model.AnotherUser.Name</div>
+                                            @item.Body
+                                        </div>
+                                    </div>
+                            }
+                            else
+                            {
+                                <div class="chat-message-right mb-4">
+                                    <div>
+                                        <img src="@Model.CurrentUser.Profileimage" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+                                        <div class="text-muted small text-nowrap mt-2">@item.Datesend.ToString("t")</div>
+                                    </div>
+                                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                        <div class="font-weight-bold mb-1">Вы</div>
+                                        @item.Body
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
 
-					<div class="chat-message-right mb-4">
-						<div>
-							<img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-							<div class="text-muted small text-nowrap mt-2">2:40 am</div>
-						</div>
-						<div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-							<div class="font-weight-bold mb-1">You</div>
-							Cum ea graeci tractatos.
-						</div>
-					</div>
-				</div>
-			</div>
-		
-		</div>
+            <div class="py-3 px-4 border-top">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="messageInput" placeholder="Type your message">
+                    <button class="btn btn-primary" id="sendButton">Отправить</button>
+                </div>
+            </div>
 
-		<div class="py-3 px-4 border-top">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Type your message">
-				<button class="btn btn-primary">Отправить</button>
-			</div>
-		</div>
+        </div>
 
-	</div>
+
+
+	}
 </div>
 
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script charset="utf-8">
+    
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    //Disable the send button until connection is established.
+    document.getElementById("sendButton").disabled = true;
+
+
+
+    connection.on("ReceiveMessage", function (user, message, id_chat) {
+
+        var container = document.createElement("div");
+
+        if (user == @Model.CurrentUser.IdUser) {
+            container.className = "chat-message-right mb-4";
+
+            var contr = document.createElement("div");
+
+            var subContainer = document.createElement("img");
+            subContainer.src = "@Model.CurrentUser.Profileimage";
+            subContainer.className = "rounded-circle mr-1";
+            subContainer.width = 40;
+            subContainer.height = 40;
+
+            var timeContainer = document.createElement("div");
+            timeContainer.className = "text-muted small text-nowrap mt-2";
+
+            timeContainer.textContent = '@DateTime.Now.ToString("t")';
+
+            contr.appendChild(subContainer);
+            contr.appendChild(timeContainer);
+
+            container.appendChild(contr);
+
+            var textm = document.createElement("div");
+            textm.className = "flex-shrink-1 bg-light rounded py-2 px-3 mr-3";
+
+            var WhoMess = document.createElement("div");
+            WhoMess.className = "font-weight-bold mb-1";
+            WhoMess.textContent = "Вы";
+
+            textm.appendChild(WhoMess);
+
+            var textbody = document.createElement("p");
+            textbody.textContent = `${message}`;
+
+            textm.appendChild(textbody);
+
+            container.appendChild(textm);
+        }
+        else {
+            container.className = "chat-message-left mb-4";
+
+            var contr = document.createElement("div");
+
+            var im = '@Model.AnotherUser!.Profileimage!.ToString()';
+
+            var subContainer = document.createElement("img");
+            subContainer.src = im;
+            subContainer.className = "rounded-circle mr-1";
+            subContainer.width = 40;
+            subContainer.height = 40;
+
+            var timeContainer = document.createElement("div");
+            timeContainer.className = "text-muted small text-nowrap mt-2";
+
+            timeContainer.textContent = '@DateTime.Now.ToString("t")';
+
+
+            contr.appendChild(subContainer);
+            contr.appendChild(timeContainer);
+
+            container.appendChild(contr);
+
+            var textm = document.createElement("div");
+            textm.className = "flex-shrink-1 bg-light rounded py-2 px-3 mr-3";
+
+            var WhoMess = document.createElement("p");
+            WhoMess.className = "font-weight-bold mb-1";
+
+            WhoMess.textContent = "Коллега";
+            textm.appendChild(WhoMess);
+
+            var textbody = document.createElement("p");
+            textbody.textContent = `${message}`;
+
+            textm.appendChild(textbody);
+
+            container.appendChild(textm);
+        }
+
+
+        document.getElementById("messagesList").appendChild(container);
+        
+        var element = document.getElementById("messagesList");
+
+        element.scrollTop = element.scrollHeight;
+
+    });
+
+    connection.on("JoinGroup", function (id_chat) {
+        console.log(id_chat);
+    });
+
+    connection.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+        connection.invoke("JoinChat", @this.HttpContext.Request.Query["id_chat"]);
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        var currentdate = new Date();
+
+
+
+        var user = document.getElementById("userInput").value;
+        var message = document.getElementById("messageInput").value;
+
+
+        connection.invoke("SendMessage", user, message, @this.HttpContext.Request.Query["id_chat"]).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+</script>

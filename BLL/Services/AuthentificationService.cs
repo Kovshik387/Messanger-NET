@@ -22,5 +22,9 @@ namespace BLL.Services
 			return Mapping.Mapper.Map<AuthentificationDTO>(await _unitOfWork.UserRepository.GetUserByLoginAsync(login, password));
         }
 
-    }
+		public async Task<UserDTO> GetUserProfileImage(int id_user)
+		{
+            return Mapping.Mapper.Map<UserDTO>(await _unitOfWork.UserRepository.GetItemAsync(id_user));
+		}
+	}
 }

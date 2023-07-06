@@ -12,10 +12,6 @@ namespace DAL.EntityTypeConfiguration
 
 			entity.ToTable("message");
 
-			entity.HasIndex(e => e.Userfrom, "message_userfrom_key").IsUnique();
-
-			entity.HasIndex(e => e.Userto, "message_userto_key").IsUnique();
-
 			entity.Property(e => e.IdMess).HasColumnName("id_mess");
 			entity.Property(e => e.Body)
 				.HasMaxLength(300)
@@ -24,24 +20,18 @@ namespace DAL.EntityTypeConfiguration
 				.HasColumnType("timestamp without time zone")
 				.HasColumnName("datesend");
 			entity.Property(e => e.IdChat).HasColumnName("id_chat");
+			entity.Property(e => e.IdUser).HasColumnName("id_user");
 			entity.Property(e => e.Isread).HasColumnName("isread");
-			entity.Property(e => e.Userfrom).HasColumnName("userfrom");
-			entity.Property(e => e.Userto).HasColumnName("userto");
 
 			entity.HasOne(d => d.IdChatNavigation).WithMany(p => p.Messages)
 				.HasForeignKey(d => d.IdChat)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("message_id_chat_fkey");
 
-			entity.HasOne(d => d.UserfromNavigation).WithOne(p => p.MessageUserfromNavigation)
-				.HasForeignKey<Message>(d => d.Userfrom)
+			entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Messages)
+				.HasForeignKey(d => d.IdUser)
 				.OnDelete(DeleteBehavior.ClientSetNull)
-				.HasConstraintName("message_userfrom_fkey");
-
-			entity.HasOne(d => d.UsertoNavigation).WithOne(p => p.MessageUsertoNavigation)
-				.HasForeignKey<Message>(d => d.Userto)
-				.OnDelete(DeleteBehavior.ClientSetNull)
-				.HasConstraintName("message_userto_fkey");
+				.HasConstraintName("message_id_user_fkey");
 		}
     }
 }

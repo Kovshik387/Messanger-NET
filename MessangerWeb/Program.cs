@@ -5,6 +5,7 @@ using DAL.Interfaces;
 using DAL.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MessangerWeb.Hubs;
 using MessangerWeb.Infrastructure.Validators;
 using MessangerWeb.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -28,6 +29,11 @@ builder.Services.AddDbContextPool<MessagerContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthentificationService, AuthentificationService>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+builder.Services.AddScoped<IChatsService, ChatService>();
+builder.Services.AddScoped<IUserChatService, UserChatService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSignalR();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -57,5 +63,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

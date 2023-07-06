@@ -1,13 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DAL.Models;
 using DAL.EntityTypeConfiguration;
-using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL;
 
 public partial class MessagerContext : DbContext
 {
+    public MessagerContext()
+    {
+    }
+
+    public MessagerContext(DbContextOptions<MessagerContext> options)
+        : base(options)
+    {
+    }
 
     public virtual DbSet<Authorize> Authorizes { get; set; }
 
@@ -21,8 +27,7 @@ public partial class MessagerContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public MessagerContext(DbContextOptions<MessagerContext> options)
-        : base(options) { }
+    public virtual DbSet<Userschat> Userschats { get; set; }
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
@@ -40,8 +45,7 @@ public partial class MessagerContext : DbContext
 		modelBuilder.ApplyConfiguration(new MessageConfiguration());
 		modelBuilder.ApplyConfiguration(new RoleConfiguration());
 		modelBuilder.ApplyConfiguration(new TaskConfiguration());
+		modelBuilder.ApplyConfiguration(new UserchatConfiguration());
 		modelBuilder.ApplyConfiguration(new UserConfiguration());
-
-		base.OnModelCreating(modelBuilder);
 	}
 }

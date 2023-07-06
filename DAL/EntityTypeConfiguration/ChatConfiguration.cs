@@ -7,20 +7,11 @@ namespace DAL.EntityTypeConfiguration
     {
         public void Configure(EntityTypeBuilder<Chat> entity)
         {
-			entity.HasKey(e => e.IdChat).HasName("chat_pkey");
+			entity.HasKey(e => e.IdChat).HasName("chats_pkey");
 
-			entity.ToTable("chat");
+			entity.ToTable("chats");
 
 			entity.Property(e => e.IdChat).HasColumnName("id_chat");
-			entity.Property(e => e.IdOwner).HasColumnName("id_owner");
-			entity.Property(e => e.Name)
-				.HasMaxLength(50)
-				.HasColumnName("name");
-
-			entity.HasOne(d => d.IdOwnerNavigation).WithMany(p => p.Chats)
-				.HasForeignKey(d => d.IdOwner)
-				.OnDelete(DeleteBehavior.ClientSetNull)
-				.HasConstraintName("chat_id_owner_fkey");
 		}
     }
 }

@@ -1,0 +1,22 @@
+﻿@page
+@model MessangerWeb.Pages.FindUserModel
+@{
+}
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    @foreach (var item in Model.UsersView)
+    {
+        if (item.IdUser == int.Parse(HttpContext.User!.Identity!.Name!)) continue;
+
+        <div class="card h-100">
+            <img src="@item.Profileimage" class="card-img-top" alt="@item.Name">
+            <div class="card-body">
+                <a asp-page="CreateChat" asp-route-id_other="@item.IdUser" class="card-title">
+                    @item.Name @item.Surname @item.Patronymic
+                </a>
+                <p class="card-text">@item.Role</p>
+                    
+            </div>
+        </div>
+    }
+</div>    

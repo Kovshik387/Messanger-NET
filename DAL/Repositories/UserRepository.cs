@@ -23,12 +23,13 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.Users.Include(a => a.IdAuthorizeNavigation).ThenInclude(r => r.IdRoleNavigation).ToListAsync();
         }
 
         public async Task<User?> GetItemAsync(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.Users.Include(s => s.IdAuthorizeNavigation).ThenInclude(r => r.IdRoleNavigation).
+                FirstOrDefaultAsync(id_ => id_.IdUser == id);
         }
 
         public async Task<User?> GetUserByLoginAsync(string login, string password)
@@ -63,5 +64,12 @@ namespace DAL.Repositories
 
 			await _dbContext.Users.AddAsync(user);
 		}
+
+        public async Task<User?> GetAnotherUserAsync(int id, int id_chat)
+        {
+            var id_another = await _dbContext.Userschats.Where(u => u.IdChat == id_chat && u.IdUser != id).FirstOrDefaultAsync();
+
+            return await _dbContext.Users.FindAsync(id_another!.IdUser);
+        }
     }
 }

@@ -25,11 +25,9 @@ public partial class User
 
     public int IdAuthorize { get; set; }
 
-    public virtual ICollection<Chat> Chats { get; set; } = new List<Chat>();
-
     public virtual Authorize IdAuthorizeNavigation { get; set; } = null!;
 
-    public virtual Message? MessageUserfromNavigation { get; set; }
+    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
-    public virtual Message? MessageUsertoNavigation { get; set; }
+    public virtual ICollection<Userschat> Userschats { get; set; } = new List<Userschat>();
 }
