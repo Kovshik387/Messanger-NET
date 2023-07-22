@@ -54,7 +54,7 @@
 			}
         </div>
     </div>
-    @if (Model.AnotherUser.Patronymic != null)
+    @if (Model.AnotherUser!.Patronymic != null)
     {
         <div class="card col">
             <div class="row">
@@ -129,97 +129,63 @@
 
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
-<script charset="utf-8">
+<script>
     
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-    //Disable the send button until connection is established.
     document.getElementById("sendButton").disabled = true;
 
-
+        
 
     connection.on("ReceiveMessage", function (user, message, id_chat) {
 
         var container = document.createElement("div");
+        var contr = document.createElement("div");
+        var subContainer = document.createElement("img");
 
-        if (user == @Model.CurrentUser.IdUser) {
+        var WhoMess = document.createElement("div");
+        WhoMess.className = "font-weight-bold mb-1";
+
+        if (user == @Model.CurrentUser.IdUser) 
+        {
             container.className = "chat-message-right mb-4";
-
-            var contr = document.createElement("div");
-
-            var subContainer = document.createElement("img");
             subContainer.src = "@Model.CurrentUser.Profileimage";
-            subContainer.className = "rounded-circle mr-1";
-            subContainer.width = 40;
-            subContainer.height = 40;
-
-            var timeContainer = document.createElement("div");
-            timeContainer.className = "text-muted small text-nowrap mt-2";
-
-            timeContainer.textContent = '@DateTime.Now.ToString("t")';
-
-            contr.appendChild(subContainer);
-            contr.appendChild(timeContainer);
-
-            container.appendChild(contr);
-
-            var textm = document.createElement("div");
-            textm.className = "flex-shrink-1 bg-light rounded py-2 px-3 mr-3";
-
-            var WhoMess = document.createElement("div");
-            WhoMess.className = "font-weight-bold mb-1";
             WhoMess.textContent = "Вы";
-
-            textm.appendChild(WhoMess);
-
-            var textbody = document.createElement("p");
-            textbody.textContent = `${message}`;
-
-            textm.appendChild(textbody);
-
-            container.appendChild(textm);
         }
-        else {
+        else
+        {
             container.className = "chat-message-left mb-4";
+            subContainer.src = "@Model.AnotherUser!.Profileimage!.ToString()";
+            WhoMess.textContent = 'Коллега'; // ?????? Починить
 
-            var contr = document.createElement("div");
-
-            var im = '@Model.AnotherUser!.Profileimage!.ToString()';
-
-            var subContainer = document.createElement("img");
-            subContainer.src = im;
-            subContainer.className = "rounded-circle mr-1";
-            subContainer.width = 40;
-            subContainer.height = 40;
-
-            var timeContainer = document.createElement("div");
-            timeContainer.className = "text-muted small text-nowrap mt-2";
-
-            timeContainer.textContent = '@DateTime.Now.ToString("t")';
-
-
-            contr.appendChild(subContainer);
-            contr.appendChild(timeContainer);
-
-            container.appendChild(contr);
-
-            var textm = document.createElement("div");
-            textm.className = "flex-shrink-1 bg-light rounded py-2 px-3 mr-3";
-
-            var WhoMess = document.createElement("p");
-            WhoMess.className = "font-weight-bold mb-1";
-
-            WhoMess.textContent = "Коллега";
-            textm.appendChild(WhoMess);
-
-            var textbody = document.createElement("p");
-            textbody.textContent = `${message}`;
-
-            textm.appendChild(textbody);
-
-            container.appendChild(textm);
         }
+        
+        subContainer.className = "rounded-circle mr-1";
+        subContainer.width = 40;
+        subContainer.height = 40;
 
+        var timeContainer = document.createElement("div");
+        timeContainer.className = "text-muted small text-nowrap mt-2";
+
+        timeContainer.textContent = '@DateTime.Now.ToString("t")';
+
+        contr.appendChild(subContainer);
+        contr.appendChild(timeContainer);
+
+        container.appendChild(contr);
+
+        var textm = document.createElement("div");
+        textm.className = "flex-shrink-1 bg-light rounded py-2 px-3 mr-3";
+
+
+        textm.appendChild(WhoMess);
+
+        var textbody = document.createElement("p");
+        textbody.textContent = `${message}`;
+
+        textm.appendChild(textbody);
+
+        container.appendChild(textm);
 
         document.getElementById("messagesList").appendChild(container);
         

@@ -29,7 +29,7 @@ namespace MessangerWeb.Pages
 		public UserView CurrentUser { get; set; } = null!;
 
 		[BindProperty]
-		public UserView AnotherUser { get; set; } = new();
+		public UserView? AnotherUser { get; set; } = new();
 
 		public aModel(IMapper mapper, ILogger<LoginModel> logger, IUserChatService chatsService, IAuthentificationService authentificationService, IMessageService message, IUserService userService) =>
             (_mapper, _logger, _chatsService, _authentificationService, _messageService, _userService) = (mapper, logger, chatsService, authentificationService, message, userService);
